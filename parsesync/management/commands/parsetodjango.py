@@ -4,6 +4,7 @@ from datetime import datetime
 from django.core.files import File
 from django.core.management.base import BaseCommand
 from django.contrib.contenttypes.models import ContentType
+from django.utils.dateparse import parse_datetime
 from json import loads
 from optparse import make_option
 from parsesync import to_snake_case
@@ -85,7 +86,7 @@ class Command(BaseCommand):
                 if type(value) != dict:
                     setattr(instance, snake_key, value)
                 elif value['__type'] == 'Date':
-                    conv_value = datetime.strptime(value['iso'], "%Y-%m-%dT%H:%M:%S.000Z")
+                    conv_value = parse_datetime(value['iso'])
                     setattr(instance, snake_key, conv_value)
                 elif value['__type'] == 'File':
                     if 'url' in value:
