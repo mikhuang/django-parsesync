@@ -20,6 +20,7 @@ class ParseClient():
     BASE_URL = 'https://api.parse.com/1/'
     FILES_URL = '%sfiles/' % BASE_URL
     QUERY_URL = CREATE_URL = BASE_URL + 'classes/%s'
+    USER_QUERY_URL = USER_CREATE_URL = BASE_URL + 'users'
     GET_URL = UPDATE_URL = DELETE_URL = QUERY_URL + '/%s'
     SCHEMAS_URL = '%sschemas' % BASE_URL
 
@@ -42,8 +43,12 @@ class ParseClient():
             'limit': limit,
             'skip': skip,
         }
-        r = get('%s?%s' % (self.QUERY_URL % cls, urlencode(payload)), **self._request_kwargs())
-        return loads(r.text)
+        url = self.QUERY_URL % cls
+        if (cls == 'User'):
+            url = self.USER_QUERY_URL
+
+        resp = get('%s?%s' % (url, urlencode(payload)), **self._request_kwargs())
+        return loads(resp.text)
 
     def schemas(self):
         r = get(self.SCHEMAS_URL, **self._request_kwargs(master_key_required=True))

@@ -51,7 +51,13 @@ class Command(BaseCommand):
         model_name = model.__name__
         where = {}
 
-        print 'Querying %s on Parse...' % (model_name)
+        # check to see if model.Meta.parse_table is specified
+        try:
+            model_name = model._meta.parse_table
+            print 'Querying %s (%s) on Parse...' % (model.__name__, model_name)
+        except AttributeError:
+            print 'Querying %s on Parse...' % (model_name)
+
         while True:
             if not all:
                 last_synced = self.psc.get_last_updated_item_from_parse(model)

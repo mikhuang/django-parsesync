@@ -12,6 +12,10 @@ from os.path import splitext
 from parsesync import ParseSyncException, exception_handler, to_camel_case, to_snake_case
 from parsesync.client import ParseClient
 
+import django.db.models.options as options
+
+options.DEFAULT_NAMES = options.DEFAULT_NAMES + ('parse_table',) # allow parse table name to be specified
+
 
 class ParseModel(models.Model):
     CREATED_AT_PARSE_FIELD = 'createdAt'
