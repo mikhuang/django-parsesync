@@ -20,6 +20,7 @@ Example: ./manage.py importparsejson /Users/username/some_export/_User.json --mo
 
 class Command(BaseCommand):
     help = 'Sync exported data from Parse to Django. Expects path to file as argument'
+    verbose = False
 
     # Django < 1.7- support
     option_list = BaseCommand.option_list + (
@@ -37,6 +38,7 @@ class Command(BaseCommand):
 
         # based on file name or override, filter the model
         model_filter = options.get('model')
+        self.verbose = options.get('verbose')
         if not model_filter:
             model_filter = os.path.basename(filename).split('.')[0]
 
@@ -56,7 +58,7 @@ class Command(BaseCommand):
                 self.save(model, model_filter, results)
 
     def verbose_print(self, thing):
-        if options.get('verbose'):
+        if self.verbose:
             print thing
 
     def save(self, model, model_name, results):

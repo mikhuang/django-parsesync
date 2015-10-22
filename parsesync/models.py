@@ -58,7 +58,7 @@ class ParseModel(models.Model):
             exception_handler(result)
             self.updated_at = result[self.UPDATED_AT_PARSE_FIELD]
 
-    def save(self):
+    def save(self, **kwargs):
         if self.save_to_parse:
             self._get_payload()
 
@@ -67,7 +67,7 @@ class ParseModel(models.Model):
             else:
                 self.parse_update()
 
-        super(ParseModel, self).save()
+        super(ParseModel, self).save(**kwargs)
 
     def _get_payload(self):
         self.payload = {}
