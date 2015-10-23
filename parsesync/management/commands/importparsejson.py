@@ -90,7 +90,10 @@ class Command(BaseCommand):
                         dl_file = urlretrieve(value['url'])
                         files.append([getattr(instance, snake_key), value['name'], File(open(dl_file[0]))])
                 elif value['__type'] == 'Pointer':
-                    setattr(instance, '%s_id' % value['className'].lower(), value['objectId'])
+                    class_name = value['className'].lower()
+                    if class_name == "_user":
+                        class_name = "user"
+                    setattr(instance, '%s_id' % class_name, value['objectId'])
                 else:
                     print 'Unhandled: %s' % value
 
